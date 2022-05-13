@@ -170,4 +170,61 @@ public class Ball
 
 		return distance < size/2 + b.size/2;
 	}
-}
+	public void deflect() {
+        // YOU NEED TO FILL THESE VALUES IN AS APPROPRIATE...
+        double xPosition1, xPosition2, yPosition1, yPosition2;
+        double xSpeed1, xSpeed2, ySpeed1, ySpeed2;
+        
+        double p1InitialMomentum = Math.sqrt(xSpeed1 * xSpeed1 + ySpeed1 * ySpeed1);
+        double p2InitialMomentum = Math.sqrt(xSpeed2 * xSpeed2 + ySpeed2 * ySpeed2);
+        
+        double[] p1Trajectory = { xSpeed1, ySpeed1 };
+        double[] p2Trajectory = { xSpeed2, ySpeed2 };
+       
+        double[] impactVector = { xPosition2 - xPosition1, yPosition2 - yPosition1 };
+        double[] impactVectorNorm = normalizeVector(impactVector);
+        
+        double p1dotImpact = Math.abs(p1Trajectory[0] * impactVectorNorm[0] + p1Trajectory[1] * impactVectorNorm[1]);
+        double p2dotImpact = Math.abs(p2Trajectory[0] * impactVectorNorm[0] + p2Trajectory[1] * impactVectorNorm[1]);
+       
+        double[] p1Deflect = { -impactVectorNorm[0] * p2dotImpact, -impactVectorNorm[1] * p2dotImpact };
+        double[] p2Deflect = { impactVectorNorm[0] * p1dotImpact, impactVectorNorm[1] * p1dotImpact };
+       
+        double[] p1FinalTrajectory = { p1Trajectory[0] + p1Deflect[0] - p2Deflect[0],
+                 p1Trajectory[1] + p1Deflect[1] - p2Deflect[1] };
+        double[] p2FinalTrajectory = { p2Trajectory[0] + p2Deflect[0] - p1Deflect[0],
+                 p2Trajectory[1] + p2Deflect[1] - p1Deflect[1] };
+        
+        double p1FinalMomentum = Math
+                .sqrt(p1FinalTrajectory[0] * p1FinalTrajectory[0] + p1FinalTrajectory[1] * p1FinalTrajectory[1]);
+        double p2FinalMomentum = Math
+                .sqrt(p2FinalTrajectory[0] * p2FinalTrajectory[0] + p2FinalTrajectory[1] * p2FinalTrajectory[1]);
+
+       
+        double mag = (p1InitialMomentum + p2InitialMomentum) / (p1FinalMomentum + p2FinalMomentum);
+        
+        xSpeed1 = p1FinalTrajectory[0] * mag;
+        ySpeed1 = p1FinalTrajectory[1] * mag;
+        xSpeed2 = p2FinalTrajectory[0] * mag;
+        ySpeed2 = p2FinalTrajectory[1] * mag;
+    }
+    
+    private double[] normalizeVector(double[] vec) {
+        double mag = 0.0;
+        int dimensions = vec.length;
+        double[] result = new double[dimensions];
+        for (int i = 0; i < dimensions; i++)
+            mag += vec[i] * vec[i];
+        mag = Math.sqrt(mag);
+        if (mag == 0.0) {
+            result[0] = 1.0;
+            for (int i = 1; i < dimensions; i++)
+                result[i] = 0.0;
+        } else {
+            for (int i = 0; i < dimensions; i++)
+                result[i] = vec[i] / mag;
+        }
+        return result;
+    }
+}//create curved lines as ball inside ball, refactor player classes, sort out deflect, since deflect is in the base only need to pass external ball parameters
+
