@@ -1,8 +1,8 @@
 public class Players
 {
-    
-    Ball body = new Ball(10,10,30,"BLACK",1); 
-    Rectangle pole = new Rectangle(10,10,5,10,"BLACK",1);
+    int score = 0;
+    Ball body = new Ball(10,10,40,"BLACK",1); 
+    Rectangle pole = new Rectangle(0,10,15,70,"BLACK",1);
     
     public void addTo(GameArena Klask)
     {
@@ -12,47 +12,62 @@ public class Players
 
     public void moveXright()
     {
-        body.setXPosition(body.getXPosition() +1);
-        pole.setXPosition(pole.getXPosition() +1);
+        body.setXPosition(body.getXPosition() +2);
+        pole.setXPosition(pole.getXPosition() +2);
     }
 
     public void moveXleft()
     {
-        body.setXPosition(body.getXPosition() -1);
-        pole.setXPosition(pole.getXPosition() -1);
+        body.setXPosition(body.getXPosition() -2);
+        pole.setXPosition(pole.getXPosition() -2);
     }
 
     public void moveYup()
     {
-        body.setYPosition(body.getYPosition() +1);
-        pole.setYPosition(pole.getYPosition() +1);
+        body.setYPosition(body.getYPosition() -2);
+        pole.setYPosition(pole.getYPosition() -2);
     }
 
     public void moveYdown()
     {
-        body.setYPosition(body.getYPosition() -1);
-        pole.setYPosition(pole.getYPosition() -1);
+        body.setYPosition(body.getYPosition() +2);
+        pole.setYPosition(pole.getYPosition() +2);
     }
     
-    public void getXPos1()
-    {
-        body.getXPosition();
-        pole.getXPosition();
-    }
+    // public double getXPos1()
+    // {
+    //     body.getXPosition();
+    //     pole.getXPosition();
+    //     return double Xpos;
+    // }
 
-    public void getYpos1()
-    {
-        body.getYPosition();
-        pole.getYPosition();
-    }
+    // public double getYpos1()
+    // {
+    //     body.getYPosition();
+    //     pole.getYPosition();
+    //     return double Ypos;
+    // }
     public void setPos(int x, int y)
     {
         body.setYPosition(y);
         body.setXPosition(x);
-        pole.setXPosition(x);
-        pole.setYPosition(y);
+        pole.setXPosition(x-8);
+        pole.setYPosition(y-8);
 
     }
+
+    public void setXPos(int x)
+    {
+        body.setXPosition(x);
+        pole.setXPosition(x-8);
+    }
+
+    public void setYPos(int y)
+    {
+        body.setYPosition(y);
+        pole.setYPosition(y-8);
+    }
+
     
     
 

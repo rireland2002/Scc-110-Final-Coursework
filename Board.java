@@ -15,8 +15,6 @@ public class Board
     Ball righttop2 = new Ball(880, 110, 170, "BLUE");
     Ball rightbot1 = new Ball(880, 590, 200, "GREY",0);
     Ball rightbot2 = new Ball(880, 590, 170, "BLUE");
-    Ball goal1 = new Ball(230,350,80,"GREY");
-    Ball goal2 = new Ball(830,350,80,"GREY");
     public void BoardAdd(GameArena Klask)
     {
         Klask.addLine(Horz1);
@@ -34,7 +32,10 @@ public class Board
         Klask.addBall(righttop2);
         Klask.addBall(rightbot1);
         Klask.addBall(rightbot2);
-        Klask.addBall(goal1);
-        Klask.addBall(goal2);
+        
+    }
+    public void RemoveText(GameArena Klask)
+    {
+        Klask.removeText(top);
     }
 }

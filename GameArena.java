@@ -32,6 +32,10 @@ public class GameArena extends JPanel implements Runnable, KeyListener, MouseLis
 	private boolean space = false;
 	private boolean esc = false;
 	private boolean enter = false;
+	private boolean w = false;
+	private boolean a = false;
+	private boolean s = false;
+	private boolean d = false;
 	private boolean[] alphasPressed = new boolean[26];
 	private final static int asciiAZOffset = 65;
 	private final static int alphabetLength = 25;
@@ -546,6 +550,14 @@ public class GameArena extends JPanel implements Runnable, KeyListener, MouseLis
 			esc = yn;
 		if (code == KeyEvent.VK_ENTER)
 			enter = yn;
+		if (code == KeyEvent.VK_W)
+			w = yn;
+		if (code == KeyEvent.VK_A)
+			a = yn;
+		if (code == KeyEvent.VK_S)
+			s = yn;
+		if (code == KeyEvent.VK_D)
+			d = yn;
 		//ASCII A-Z check
 		if (isAsciiAZ(code))
 			alphasPressed[code-asciiAZOffset] = yn;
@@ -628,6 +640,26 @@ public class GameArena extends JPanel implements Runnable, KeyListener, MouseLis
 	public boolean upPressed()
 	{
 		return up;
+	}
+
+	public boolean wPressed()
+	{
+		return w;
+	}
+
+	public boolean aPressed()
+	{
+		return a;
+	}
+
+	public boolean sPressed()
+	{
+		return s;
+	}
+
+	public boolean dPressed()
+	{
+		return d;
 	}
 
 	/**

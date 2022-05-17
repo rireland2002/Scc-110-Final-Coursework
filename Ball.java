@@ -170,18 +170,17 @@ public class Ball
 
 		return distance < size/2 + b.size/2;
 	}
-	public void deflect() {
+	public void deflect(double xSpeed2, double ySpeed2, double xPosition2, double yPosition2) {
         // YOU NEED TO FILL THESE VALUES IN AS APPROPRIATE...
-        double xPosition1, xPosition2, yPosition1, yPosition2;
-        double xSpeed1, xSpeed2, ySpeed1, ySpeed2;
+        double xSpeed=2, ySpeed=2;
         
-        double p1InitialMomentum = Math.sqrt(xSpeed1 * xSpeed1 + ySpeed1 * ySpeed1);
+        double p1InitialMomentum = Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
         double p2InitialMomentum = Math.sqrt(xSpeed2 * xSpeed2 + ySpeed2 * ySpeed2);
         
-        double[] p1Trajectory = { xSpeed1, ySpeed1 };
+        double[] p1Trajectory = { xSpeed, ySpeed };
         double[] p2Trajectory = { xSpeed2, ySpeed2 };
        
-        double[] impactVector = { xPosition2 - xPosition1, yPosition2 - yPosition1 };
+        double[] impactVector = { xPosition2 - xPosition, yPosition2 - yPosition };
         double[] impactVectorNorm = normalizeVector(impactVector);
         
         double p1dotImpact = Math.abs(p1Trajectory[0] * impactVectorNorm[0] + p1Trajectory[1] * impactVectorNorm[1]);
@@ -203,8 +202,8 @@ public class Ball
        
         double mag = (p1InitialMomentum + p2InitialMomentum) / (p1FinalMomentum + p2FinalMomentum);
         
-        xSpeed1 = p1FinalTrajectory[0] * mag;
-        ySpeed1 = p1FinalTrajectory[1] * mag;
+        xSpeed = p1FinalTrajectory[0] * mag;
+        ySpeed = p1FinalTrajectory[1] * mag;
         xSpeed2 = p2FinalTrajectory[0] * mag;
         ySpeed2 = p2FinalTrajectory[1] * mag;
     }
@@ -225,6 +224,14 @@ public class Ball
                 result[i] = vec[i] / mag;
         }
         return result;
+    }
+
+	public void magnetism(double xPosition2, double yPosition2)//Calculate by getting the distance, doing (xpos-xpos2)*0.99 to get a distance variable, then do that number+original xpos2 and set as new xpos
+    {
+        double distx = (xPosition-xPosition2)*0.99;
+        double disty = (yPosition-yPosition2)*0.99;
+        setXPosition(distx+xPosition2);
+        setYPosition(disty+yPosition2); 
     }
 }//create curved lines as ball inside ball, refactor player classes, sort out deflect, since deflect is in the base only need to pass external ball parameters
 
