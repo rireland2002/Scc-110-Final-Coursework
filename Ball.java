@@ -15,6 +15,10 @@ public class Ball
 	private double size;				// The diameter of this Ball
 	private int layer;					// The layer of this ball is on.
 	private String colour;				// The colour of this Ball
+	public double xSpeed;//The speed the ball will move on the x axis
+	public double ySpeed;//The speed the ball will move on the y axis
+	private double x;
+	private double y;
 
 										// Permissable colours are:
 										// BLACK, BLUE, CYAN, DARKGREY, GREY,
@@ -26,15 +30,22 @@ public class Ball
 	 * @param x The x co-ordinate of centre of the Ball (in pixels)
 	 * @param y The y co-ordinate of centre of the Ball (in pixels)
 	 * @param diameter The diameter of the Ball (in pixels)
-	 * @param col The colour of the Ball (Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW or ##RRGGBB)
-	 */
+	 * @param col
+	 * @param xSpeed
+	 * @param ySpeed
+	 *  The colour of the Ball (Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW or ##RRGGBB)
+	*/
 	public Ball(double x, double y, double diameter, String col)
 	{
 		this.xPosition = x;
 		this.yPosition = y;
+		this.x = x;
+		this.y = y;
 		this.size = diameter;
 		this.colour = col;
 		this.layer = 0;
+		this.xSpeed = 0;
+		this.ySpeed = 0;
 	}	
 
 	/**
@@ -43,7 +54,9 @@ public class Ball
 	 * @param y The y co-ordinate of centre of the Ball (in pixels)
 	 * @param diameter The diameter of the Ball (in pixels)
 	 * @param col The colour of the Ball (Permissable colours are: BLACK, BLUE, CYAN, DARKGREY, GREY, GREEN, LIGHTGREY, MAGENTA, ORANGE, PINK, RED, WHITE, YELLOW or ##RRGGBB)
-	 * @param layer The layer this ball is to be drawn on. Objects with a higher layer number are always drawn on top of those with lower layer numbers.
+	 * @param layer
+	 * @param xSpeed
+	 * @param ySpeed The layer this ball is to be drawn on. Objects with a higher layer number are always drawn on top of those with lower layer numbers.
 	 */
 	public Ball(double x, double y, double diameter, String col, int layer)
 	{
@@ -52,6 +65,8 @@ public class Ball
 		this.size = diameter;
 		this.colour = col;
 		this.layer = layer;
+		this.xSpeed = 0;
+		this.ySpeed = 0;
 	}	
 
 	/**
@@ -72,6 +87,16 @@ public class Ball
 		return yPosition;
 	}
 
+	public double getYspeed()
+	{
+		return ySpeed;
+	}
+
+	public double getXspeed()
+	{
+		return xSpeed;
+	}
+
 	/**
 	 * Moves the current position of this Ball to the given co-ordinates
 	 * @param x the new x co-ordinate of this Ball
@@ -90,6 +115,12 @@ public class Ball
 		this.yPosition = y;
 	}
 
+	
+	public void setXspeed(double xSp)
+	{
+		this.xSpeed = xSp;
+	}
+
 	/**
 	 * Obtains the size of this Ball.
 	 * @return the diameter of this Ball,in pixels.
@@ -99,6 +130,7 @@ public class Ball
 		return size;
 	}
 	
+	
 	/**
 	 * Sets the diameter of this Ball to the given size.
 	 * @param s the new diameter of this Ball, in pixels.
@@ -107,6 +139,16 @@ public class Ball
 	{
 		size = s;
 	}
+
+	public void reverseXspeed()
+	{
+		xSpeed += -2*xSpeed;
+	}
+	public void reverseYspeed()
+	{
+		ySpeed += -2*ySpeed;
+	}
+
 
 	/**
 	 * Obtains the layer of this Ball.
@@ -155,7 +197,7 @@ public class Ball
 		xPosition += dx;
 		yPosition += dy;
 	}
-
+	
 	/**
 	 * Determines if this Ball is overlapping the given ball.
 	 * 
@@ -170,17 +212,23 @@ public class Ball
 
 		return distance < size/2 + b.size/2;
 	}
-	public void deflect(double xSpeed2, double ySpeed2, double xPosition2, double yPosition2) {
-        // YOU NEED TO FILL THESE VALUES IN AS APPROPRIATE...
-        double xSpeed=2, ySpeed=2;
+	
+	
+	
+	public void deflect(Ball b) {
         
-        double p1InitialMomentum = Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
-        double p2InitialMomentum = Math.sqrt(xSpeed2 * xSpeed2 + ySpeed2 * ySpeed2);
+		xSpeed = 6;//Values for speed when a collision occurs
+		ySpeed = 6;
+		b.xSpeed = 6;
+		b.ySpeed = 6;
         
-        double[] p1Trajectory = { xSpeed, ySpeed };
-        double[] p2Trajectory = { xSpeed2, ySpeed2 };
+		double p1InitialMomentum = Math.sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
+        double p2InitialMomentum = Math.sqrt(b.xSpeed * b.xSpeed + b.ySpeed * b.ySpeed);
+        
+		double[] p1Trajectory = { xSpeed, ySpeed };
+        double[] p2Trajectory = { b.xSpeed, b.ySpeed };
        
-        double[] impactVector = { xPosition2 - xPosition, yPosition2 - yPosition };
+        double[] impactVector = { b.xPosition - xPosition, b.yPosition - yPosition };
         double[] impactVectorNorm = normalizeVector(impactVector);
         
         double p1dotImpact = Math.abs(p1Trajectory[0] * impactVectorNorm[0] + p1Trajectory[1] * impactVectorNorm[1]);
@@ -204,9 +252,9 @@ public class Ball
         
         xSpeed = p1FinalTrajectory[0] * mag;
         ySpeed = p1FinalTrajectory[1] * mag;
-        xSpeed2 = p2FinalTrajectory[0] * mag;
-        ySpeed2 = p2FinalTrajectory[1] * mag;
-    }
+        b.xSpeed = p2FinalTrajectory[0] * mag;
+        b.ySpeed = p2FinalTrajectory[1] * mag;
+	}
     
     private double[] normalizeVector(double[] vec) {
         double mag = 0.0;
@@ -226,12 +274,12 @@ public class Ball
         return result;
     }
 
-	public void magnetism(double xPosition2, double yPosition2)//Calculate by getting the distance, doing (xpos-xpos2)*0.99 to get a distance variable, then do that number+original xpos2 and set as new xpos
+	public void magnetism(double xPosition2, double yPosition2)//Used to calculate the magnetic pull of the players, takes position of the player or a magball
     {
-        double distx = (xPosition-xPosition2)*0.99;
-        double disty = (yPosition-yPosition2)*0.99;
-        setXPosition(distx+xPosition2);
+        double distx = (xPosition-xPosition2)*0.95;//Calculates the distance to be moved on the x axis
+        double disty = (yPosition-yPosition2)*0.95;//Calculates the distance to be moved on the y axis
+        setXPosition(distx+xPosition2);//Sets the positions of the ball its called on to move the distance towards the other ball
         setYPosition(disty+yPosition2); 
     }
-}//create curved lines as ball inside ball, refactor player classes, sort out deflect, since deflect is in the base only need to pass external ball parameters
+}
 
